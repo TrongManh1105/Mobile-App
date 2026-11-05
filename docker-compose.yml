@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: trongmanh1105/voice-food-app:latest
+    image: trongmanhhh/voice-food-app:latest
     container_name: voice-food-app
     restart: unless-stopped
     ports:

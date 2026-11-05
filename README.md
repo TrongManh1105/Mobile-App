@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4+-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/trongmanh1105/voice-food-app)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/trongmanhhh/voice-food-app)
 [![Tests](https://img.shields.io/badge/Tests-23%2F23%20Passed-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](https://pytest.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
@@ -162,10 +162,10 @@ Hình ảnh Docker chính thức của dự án đã được tối ưu hóa nhi
 ### Chạy Nhanh Từ Docker Hub
 ```bash
 # Kéo image từ Docker Hub
-docker pull trongmanh1105/voice-food-app:latest
+docker pull trongmanhhh/voice-food-app:latest
 
 # Khởi chạy container
-docker run -d -p 8000:8000 --name voice-food-app trongmanh1105/voice-food-app:latest
+docker run -d -p 8000:8000 --name voice-food-app trongmanhhh/voice-food-app:latest
 
 # Truy cập ngay tại http://localhost:8000/app
 ```
@@ -173,7 +173,7 @@ docker run -d -p 8000:8000 --name voice-food-app trongmanh1105/voice-food-app:la
 ### Tự Build Image & Chạy Bằng Docker Compose
 ```bash
 # Build image cục bộ
-docker build -t trongmanh1105/voice-food-app:latest .
+docker build -t trongmanhhh/voice-food-app:latest .
 
 # Khởi chạy bằng Docker Compose
 docker-compose up -d
@@ -240,6 +240,6 @@ node --experimental-strip-types mobile/tests/voiceAndCart.test.js
 
 * **Tác Giả:** Trọng Mạnh ([@TrongManh1105](https://github.com/TrongManh1105))
 * **Mã Nguồn:** [https://github.com/TrongManh1105/Mobile-App](https://github.com/TrongManh1105/Mobile-App)
-* **Docker Image:** [https://hub.docker.com/r/trongmanh1105/voice-food-app](https://hub.docker.com/r/trongmanh1105/voice-food-app)
+* **Docker Image:** [https://hub.docker.com/r/trongmanhhh/voice-food-app](https://hub.docker.com/r/trongmanhhh/voice-food-app)
 * **Giấy Phép:** Phân phối dưới giấy phép [MIT License](LICENSE).
 
