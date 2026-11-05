@@ -1,0 +1,17 @@
+{
+  "name": "voice-assisted-food-ordering-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Clean Architecture Voice-Assisted Food Ordering Mobile App",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/voiceAndCart.test.js"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.2.2",
+    "react-redux": "^9.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}

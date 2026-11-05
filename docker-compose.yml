@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  voice-food-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: trongmanh1105/voice-food-app:latest
+    container_name: voice-food-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=sqlite+aiosqlite:///./food_app.db
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - food_app_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  food_app_data:
