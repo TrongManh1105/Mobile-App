@@ -37,10 +37,14 @@ NOTE_PATTERNS = [
     r"(không cay|khong cay)",
     r"(nhiều đá|nhieu da)",
     r"(ít đá|it da)",
+    r"(không đường|khong duong)",
     r"(ít đường|it duong)",
     r"(nước béo|nuoc beo)",
     r"(nước trong|nuoc trong)"
 ]
+
+PREFIX_REGEX = r"^(cho tôi thêm|cho em thêm|cho mình thêm|cho thêm|thêm cho tôi|thêm cho em|thêm cho|gọi thêm cho|gọi thêm|lấy thêm|đặt thêm|mua thêm|cho tôi|cho em|cho mình|cho|thêm|gọi|lấy|mua|đặt)\s+"
+SUFFIX_REGEX = r"\s+(gì đó|nữa nhé|nữa nha|nữa|nhé|nha|ạ|đi|với|giúp tôi|giúp em)$"
 
 class VoiceNLUPipeline:
     def parse_transcript(self, text: str, confidence: float = 0.95) -> VoiceNLUResult:
@@ -118,8 +122,8 @@ class VoiceNLUPipeline:
 
     def _extract_food_items(self, text: str) -> List[ExtractedItem]:
         """Extracts food items, quantities, and notes from phrase."""
-        # Split segments on 'và', 'cộng', ','
-        segments = re.split(r",|\s+và\s+|\s+cộng\s+", text)
+        # Split segments on 'và', 'cộng', ',', 'với'
+        segments = re.split(r",|\s+và\s+|\s+cộng\s+|\s+với\s+", text)
         items: List[ExtractedItem] = []
 
         for seg in segments:
@@ -127,26 +131,48 @@ class VoiceNLUPipeline:
             if not seg:
                 continue
 
-            # Remove prefixes like "cho", "thêm", "lấy", "mua"
-            seg = re.sub(r"^(cho tôi|cho em|cho mình|cho|thêm|lấy|mua|đặt)\s+", "", seg).strip()
+            # Repeatedly strip command/prefix words
+            while True:
+                new_seg = re.sub(PREFIX_REGEX, "", seg, flags=re.IGNORECASE).strip()
+                if new_seg == seg:
+                    break
+                seg = new_seg
+
+            # Repeatedly strip polite suffixes or fillers ("gì đó", "nữa nhé", "nha", "ạ")
+            while True:
+                new_seg = re.sub(SUFFIX_REGEX, "", seg, flags=re.IGNORECASE).strip()
+                if new_seg == seg:
+                    break
+                seg = new_seg
+
+            if not seg:
+                continue
 
             # Extract note
             note = None
             for pattern in NOTE_PATTERNS:
-                m = re.search(pattern, seg)
+                m = re.search(pattern, seg, flags=re.IGNORECASE)
                 if m:
                     note = m.group(1)
-                    seg = re.sub(pattern, "", seg).strip()
+                    seg = re.sub(pattern, "", seg, flags=re.IGNORECASE).strip()
                     break
 
             # Extract quantity
             qty = 1
-            # Check prefix words like "2 bát", "1 cốc", "3 phần", "hai phần"
-            match_num = re.match(r"^(\d+|một|mot|hai|ba|bốn|bon|năm|nam|sáu|sau|bảy|bay|tám|tam|chín|chin|mười)\s*(bát|tô|phần|đĩa|cốc|ly|chén|suất|hộp)?\s*", seg)
+            # Check prefix words like "2 bát", "1 cốc", "3 phần", "hai phần", "một đĩa", "1 ổ", "1 ly"
+            match_num = re.match(
+                r"^(\d+|một|mot|hai|ba|bốn|bon|tư|năm|nam|sáu|sau|bảy|bay|tám|tam|chín|chin|mười|đôi|cặp)\s*"
+                r"(bát|tô|phần|đĩa|cốc|ly|chén|suất|hộp|ổ|chai|lon|gói|miếng)?\s*",
+                seg,
+                flags=re.IGNORECASE
+            )
             if match_num:
-                num_token = match_num.group(1)
+                num_token = match_num.group(1).lower()
                 qty = NUMBER_MAP.get(num_token, 1)
                 seg = seg[match_num.end():].strip()
+
+            # Clean standalone leading classifier if user spoke e.g. "cốc trà đá" or "đĩa quẩy giòn"
+            seg = re.sub(r"^(bát|tô|phần|đĩa|cốc|ly|chén|suất|hộp|ổ|chai|lon|gói|miếng)\s+", "", seg, flags=re.IGNORECASE).strip()
 
             if seg:
                 # Capitalize dish name words

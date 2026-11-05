@@ -51,3 +51,22 @@ def test_voice_nlu_low_confidence_reprompt():
     assert result.intent == "Unknown"
     assert "chưa nghe rõ" in result.tts_response
 
+def test_voice_nlu_followup_and_prefix_cleaning():
+    """Test follow-up phrases with compound prefixes, suffixes, and unit words."""
+    test_cases = [
+        ("thêm 1 quẩy giòn", 1, "Quẩy Giòn"),
+        ("cho thêm 1 quẩy giòn", 1, "Quẩy Giòn"),
+        ("thêm 1 nước uống gì đó", 1, "Nước Uống"),
+        ("cho tôi thêm 2 cốc trà đá không đường", 2, "Trà Đá"),
+        ("gọi thêm 1 đĩa quẩy giòn nữa nhé", 1, "Quẩy Giòn"),
+        ("thêm một ổ bánh mì thịt nướng", 1, "Bánh Mì Thịt Nướng"),
+        ("thêm 1 ly trà đào", 1, "Trà Đào"),
+    ]
+    for phrase, expected_qty, expected_dish in test_cases:
+        res = voice_nlu_pipeline.parse_transcript(phrase)
+        assert res.intent == "AddToCart", f"Failed intent for: {phrase}"
+        assert len(res.items) == 1, f"Failed item count for: {phrase}"
+        assert res.items[0].quantity == expected_qty, f"Failed quantity for: {phrase}"
+        assert expected_dish.lower() in res.items[0].dish_name.lower(), f"Failed dish name for: {phrase}"
+
+

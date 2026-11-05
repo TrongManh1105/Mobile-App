@@ -1194,32 +1194,158 @@
       }
     }
 
+    function removeVietnameseTones(str) {
+      if (!str) return '';
+      return str.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        .toLowerCase()
+        .trim();
+    }
+
+    function findMatchingDish(rawQuery) {
+      if (!rawQuery || !allDishes || allDishes.length === 0) return null;
+      const q = rawQuery.toLowerCase().trim();
+      const qClean = removeVietnameseTones(q);
+
+      // 1. Exact match by name
+      let found = allDishes.find(d => d.name.toLowerCase() === q || removeVietnameseTones(d.name) === qClean);
+      if (found) return found;
+
+      // 2. Substring match: dish name contains query
+      found = allDishes.find(d => d.name.toLowerCase().includes(q) || removeVietnameseTones(d.name).includes(qClean));
+      if (found) return found;
+
+      // 3. Reverse substring match: query contains dish name
+      found = allDishes.find(d => q.includes(d.name.toLowerCase()) || qClean.includes(removeVietnameseTones(d.name)));
+      if (found) return found;
+
+      // 4. Keyword / Alias mapping for Vietnamese dining
+      const aliases = [
+        { patterns: ["quẩy", "quay", "bánh quẩy", "banh quay"], targetName: "Quẩy Giòn Phở Vàng Ươm" },
+        { patterns: ["trà đá", "tra da"], targetName: "Trà Đá Thảo Mộc" },
+        { patterns: ["trà đào", "tra dao", "đào cam sả", "dao cam sa"], targetName: "Trà Đào Cam Sả Tươi" },
+        { patterns: ["trà chanh", "tra chanh", "chanh mật ong", "chanh mat ong"], targetName: "Trà Chanh Mật Ong Giã Tay" },
+        { patterns: ["cà phê muối", "cafe muối", "cf muối", "ca phe muoi"], targetName: "Cà Phê Muối Xứ Huế" },
+        { patterns: ["cà phê", "cafe", "cf", "nâu đá", "đen đá", "ca phe", "bạc xỉu"], targetName: "Cà Phê Sữa Đá Sài Gòn" },
+        { patterns: ["nước mơ", "nuoc mo"], targetName: "Nước Mơ Chùa Hương Ướp Lạnh" },
+        { patterns: ["nước uống", "nước ngọt", "đồ uống", "nuoc uong", "do uong", "giải khát", "nước", "nuoc", "đồ gì đó", "nước gì đó", "thức uống"], category: "DoUong" },
+        { patterns: ["trứng chần", "trung chan", "hột gà", "trứng"], targetName: "Trứng Chần Nước Béo" },
+        { patterns: ["nem rán", "chả giò", "nem ran", "cha gio", "nem"], targetName: "Nem Rán Hà Nội Giòn Rụm" },
+        { patterns: ["chả cốm", "cha com"], targetName: "Chả Cốm Chiên Giòn Mùa Thu" },
+        { patterns: ["canh khổ qua", "canh muop dang", "khổ qua"], targetName: "Canh Khổ Qua Nhồi Thịt" },
+        { patterns: ["bánh mì chảo", "banh mi chao"], targetName: "Bánh Mì Chảo Xíu Mại Pate Trứng" },
+        { patterns: ["bánh mì thịt", "bánh mì giòn", "banh mi thit", "bánh mì", "banh mi"], targetName: "Bánh Mì Thịt Nướng Pate Giòn" },
+        { patterns: ["sốt vang", "sot vang"], targetName: "Phở Bò Sốt Vang Ngũ Vị" },
+        { patterns: ["tái lăn", "tai lan"], targetName: "Phở Bò Tái Lăn Hà Nội" },
+        { patterns: ["phở bò", "pho bo"], targetName: "Phở Bò Tái Lăn Hà Nội" },
+        { patterns: ["phở gà", "pho ga"], targetName: "Phở Gà Ta Thảo Mộc" },
+        { patterns: ["phở chay", "pho chay"], targetName: "Phở Chay Nấm Hương Hạt Sen" },
+        { patterns: ["phở", "pho"], targetName: "Phở Bò Tái Lăn Hà Nội" },
+        { patterns: ["cơm tấm", "com tam", "sườn bì chả"], targetName: "Cơm Tấm Sườn Bì Chả Đặc Biệt" },
+        { patterns: ["cơm gà xối mỡ", "ga xoi mo", "xối mỡ"], targetName: "Cơm Gà Xối Mỡ Giòn Da" },
+        { patterns: ["cơm gà hải nam", "cơm gà luộc", "ga hai nam"], targetName: "Cơm Gà Hải Nam Luộc Da Vàng" },
+        { patterns: ["cơm gà", "com ga"], targetName: "Cơm Gà Xối Mỡ Giòn Da" },
+        { patterns: ["cơm rang dưa bò", "dưa bò", "dua bo"], targetName: "Cơm Rang Dưa Bò Phố Cổ" },
+        { patterns: ["cơm niêu chay", "com nieu", "cơm chay"], targetName: "Cơm Niêu Chay Đậu Hũ Sốt Nấm" },
+        { patterns: ["cơm", "com"], targetName: "Cơm Tấm Sườn Bì Chả Đặc Biệt" },
+        { patterns: ["bún bò", "bun bo", "sa tế"], targetName: "Bún Bò Huế Cốt Đậm Sa Tế" },
+        { patterns: ["bún chả", "bun cha"], targetName: "Bún Chả Hà Nội Nướng Than Hoa" },
+        { patterns: ["bún đậu", "bun dau", "mắm tôm"], targetName: "Bún Đậu Mắm Tôm Mẹt Đầy Đủ" },
+        { patterns: ["bún thịt nướng", "bun thit nuong"], targetName: "Bún Thịt Nướng Chả Giòn" },
+        { patterns: ["mì quảng", "mi quang"], targetName: "Mì Quảng Tôm Thịt Trứng Cút" }
+      ];
+
+      for (const item of aliases) {
+        const matches = item.patterns.some(p => {
+          const pClean = removeVietnameseTones(p);
+          return q.includes(p) || qClean.includes(pClean);
+        });
+        if (matches) {
+          if (item.targetName) {
+            found = allDishes.find(d => d.name.toLowerCase().includes(item.targetName.toLowerCase()));
+            if (found) return found;
+          }
+          if (item.category) {
+            found = allDishes.find(d => d.category === item.category);
+            if (found) return found;
+          }
+        }
+      }
+
+      // 5. Token overlap score (at least 1 meaningful token >= 3 characters)
+      const qTokens = qClean.split(/\s+/).filter(w => w.length >= 3);
+      let bestScore = 0;
+      let bestDish = null;
+      for (const d of allDishes) {
+        const dClean = removeVietnameseTones(d.name);
+        let score = 0;
+        for (const tok of qTokens) {
+          if (dClean.includes(tok)) score++;
+        }
+        if (score > bestScore && score >= 1) {
+          bestScore = score;
+          bestDish = d;
+        }
+      }
+
+      return bestDish;
+    }
+
     function handleNLUResult(nlu) {
       document.getElementById('voice-state-title').innerText = 'Đã nhận diện thành công!';
       playChime('success');
 
       if (nlu.intent === 'AddToCart' && nlu.items && nlu.items.length > 0) {
+        let addedCount = 0;
         nlu.items.forEach(it => {
-          const matched = allDishes.find(d => d.name.toLowerCase().includes(it.dish_name.toLowerCase())) || allDishes[0];
-          quickAddToCart(matched.id, it.quantity, it.note);
+          const matched = findMatchingDish(it.dish_name);
+          if (matched) {
+            quickAddToCart(matched.id, it.quantity, it.note);
+            addedCount++;
+          } else {
+            showToast(`Không tìm thấy món "${it.dish_name}" trong thực đơn`);
+          }
         });
-        setTimeout(() => {
-          closeVoiceModal();
-          switchTab('cart');
-        }, 600);
+        if (addedCount > 0) {
+          setTimeout(() => {
+            closeVoiceModal();
+            switchTab('cart');
+          }, 600);
+        } else {
+          setTimeout(() => {
+            closeVoiceModal();
+          }, 1500);
+        }
       } else if (nlu.intent === 'ConfirmOrder') {
         setTimeout(() => {
           closeVoiceModal();
           confirmOrder();
         }, 600);
       } else if (nlu.intent === 'RemoveFromCart' && nlu.target_item) {
-        const matched = cart.find(it => it.dishName.toLowerCase().includes(nlu.target_item.toLowerCase()));
+        const matched = findMatchingDish(nlu.target_item);
         if (matched) {
-          cart = cart.filter(it => it.dishId !== matched.dishId);
-          updateCartBadges();
-          renderDishes();
-          renderCart();
-          showToast(`Đã xóa ${matched.dishName}`);
+          const inCart = cart.find(it => it.dishId === matched.id);
+          if (inCart) {
+            cart = cart.filter(it => it.dishId !== matched.id);
+            updateCartBadges();
+            renderDishes();
+            renderCart();
+            showToast(`Đã xóa ${matched.name}`);
+          } else {
+            showToast(`Món ${matched.name} không có trong giỏ hàng`);
+          }
+        } else {
+          const directMatch = cart.find(it => it.dishName.toLowerCase().includes(nlu.target_item.toLowerCase()));
+          if (directMatch) {
+            cart = cart.filter(it => it.dishId !== directMatch.dishId);
+            updateCartBadges();
+            renderDishes();
+            renderCart();
+            showToast(`Đã xóa ${directMatch.dishName}`);
+          } else {
+            showToast(`Không tìm thấy "${nlu.target_item}" trong giỏ`);
+          }
         }
         setTimeout(() => {
           closeVoiceModal();
