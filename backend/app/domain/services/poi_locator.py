@@ -44,11 +44,13 @@ class POILocator:
             # Calculate walking time one-way and round-trip
             walk_one_way = max(int(round(distance / WALKING_SPEED_METERS_PER_MIN)), 1)
             walk_round_trip = walk_one_way * 2
-            total_time_needed = walk_round_trip + (poi.suggested_visit_minutes or 10)
 
-            # Check time budget constraint
-            if total_time_needed <= (available_wait_minutes + 10):
-                results.append((poi, distance, walk_one_way))
+            # Dynamically suggest visit/stroll time fitting the wait budget
+            suggested_visit = poi.suggested_visit_minutes or 10
+            if available_wait_minutes > walk_round_trip:
+                suggested_visit = min(suggested_visit, max(available_wait_minutes - walk_round_trip, 5))
+
+            results.append((poi, distance, walk_one_way, suggested_visit))
 
         # Sort by distance ascending (closest first)
         results.sort(key=lambda x: x[1])
@@ -62,12 +64,12 @@ class POILocator:
                 longitude=poi.longitude,
                 distance_meters=dist,
                 walking_duration_minutes=walk_mins,
-                suggested_visit_minutes=poi.suggested_visit_minutes or 15,
+                suggested_visit_minutes=visit_time,
                 thumbnail_url=poi.thumbnail_url,
                 google_maps_url=poi.google_maps_url or f"https://maps.google.com/?q={poi.latitude},{poi.longitude}",
                 description=poi.description
             )
-            for poi, dist, walk_mins in results
+            for poi, dist, walk_mins, visit_time in results
         ]
 
 poi_locator = POILocator()

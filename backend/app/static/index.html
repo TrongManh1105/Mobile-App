@@ -182,11 +182,17 @@
           <button onclick="setCategory('Bun')" class="cat-pill px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium border border-slate-700/50 transition active:scale-95 whitespace-nowrap" data-cat="Bun">
             🥢 Bún & Mì
           </button>
+          <button onclick="setCategory('BanhMi')" class="cat-pill px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium border border-slate-700/50 transition active:scale-95 whitespace-nowrap" data-cat="BanhMi">
+            🥖 Bánh Mì
+          </button>
           <button onclick="setCategory('DoAnKem')" class="cat-pill px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium border border-slate-700/50 transition active:scale-95 whitespace-nowrap" data-cat="DoAnKem">
             🥟 Món Ăn Kèm
           </button>
           <button onclick="setCategory('DoUong')" class="cat-pill px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium border border-slate-700/50 transition active:scale-95 whitespace-nowrap" data-cat="DoUong">
             🥤 Nước Giải Khát
+          </button>
+          <button onclick="setCategory('TrangMieng')" class="cat-pill px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-medium border border-slate-700/50 transition active:scale-95 whitespace-nowrap" data-cat="TrangMieng">
+            🍧 Tráng Miệng
           </button>
         </div>
 
@@ -933,25 +939,40 @@
         const res = await fetch(`/api/v1/poi/nearby?available_wait_minutes=${waitMins}`);
         const pois = await res.json();
 
+        if (!pois || pois.length === 0) {
+          container.innerHTML = `
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-3 text-center text-xs text-slate-400">
+              <i class="fa-solid fa-person-walking text-sky-400 text-lg mb-1 block"></i>
+              <span>Khu vực quanh quán rất thoáng đãng, bạn có thể tản bộ nhẹ gần đây trong lúc chờ đồ ăn nhé!</span>
+            </div>
+          `;
+          return;
+        }
+
         container.innerHTML = pois.map(p => `
-          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-2.5 flex items-center justify-between text-xs">
+          <div class="bg-slate-900 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-2.5 flex items-center justify-between text-xs transition">
+            <div class="w-11 h-11 rounded-xl overflow-hidden shrink-0 mr-2.5 bg-slate-800 border border-slate-700/50">
+              <img src="${p.thumbnail_url || 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=100'}" class="w-full h-full object-cover" alt="${p.name}">
+            </div>
             <div class="flex-1 mr-2">
-              <h5 class="font-bold text-white text-xs">${p.name}</h5>
-              <div class="flex items-center space-x-1.5 text-[10px] text-slate-400 mt-0.5">
-                <span class="text-sky-400 font-semibold">${p.distance_meters}m</span>
+              <h5 class="font-bold text-white text-xs leading-tight">${p.name}</h5>
+              <div class="flex items-center space-x-1.5 text-[10px] text-slate-400 mt-1">
+                <span class="text-sky-400 font-semibold flex items-center">
+                  <i class="fa-solid fa-location-dot text-[9px] mr-1"></i>${p.distance_meters}m
+                </span>
                 <span>•</span>
                 <span>~${p.walking_duration_minutes} phút đi bộ</span>
                 <span>•</span>
-                <span class="bg-slate-800 px-1 rounded">${p.category}</span>
+                <span class="bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">${p.category}</span>
               </div>
             </div>
-            <a href="${p.google_maps_url}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white font-bold text-[10px] transition border border-sky-500/30">
-              <i class="fa-solid fa-diamond-turn-right mr-1"></i> Bản đồ
+            <a href="${p.google_maps_url}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white font-bold text-[10px] transition border border-sky-500/30 flex items-center shrink-0">
+              <i class="fa-solid fa-diamond-turn-right mr-1"></i> Đường đi
             </a>
           </div>
         `).join('');
       } catch (err) {
-        container.innerHTML = '<p class="text-xs text-slate-500">Không thể tải danh sách địa điểm lân cận.</p>';
+        container.innerHTML = '<p class="text-xs text-slate-500">Đang cập nhật danh sách địa điểm lân cận.</p>';
       }
     }
 
@@ -1011,6 +1032,14 @@
 
       // Scroll view back to top
       document.getElementById('main-scroll-view').scrollTop = 0;
+
+      // Auto-load nearby POIs if entering tracking tab and container is empty
+      if (tab === 'tracking') {
+        const poiContainer = document.getElementById('nearby-poi-container');
+        if (!poiContainer.children.length) {
+          fetchNearbyPOIs(15);
+        }
+      }
     }
 
     // Voice Modal & Waveform
