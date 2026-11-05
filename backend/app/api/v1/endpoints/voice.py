@@ -61,3 +61,18 @@ async def voice_stream_websocket(websocket: WebSocket):
         except Exception:
             pass
 
+@router.post("/parse")
+async def parse_voice_text(payload: dict):
+    """
+    HTTP REST endpoint for voice NLU parsing.
+    Acts as a reliable fallback when WebSockets are blocked or unavailable.
+    """
+    transcript = payload.get("transcript", "")
+    confidence = float(payload.get("confidence", 0.95))
+    nlu_result = voice_nlu_pipeline.parse_transcript(transcript, confidence=confidence)
+    return {
+        "event_type": "NLU_RECOGNIZED",
+        "nlu_result": nlu_result.model_dump()
+    }
+
+

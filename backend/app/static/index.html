@@ -1105,23 +1105,63 @@
       document.getElementById('voice-state-title').innerText = 'AI đang phân tích khẩu vị & món ăn...';
       stopWebSpeech();
 
+      let handled = false;
+
+      const fallbackHttp = async () => {
+        if (handled) return;
+        handled = true;
+        try {
+          const res = await fetch('/api/v1/voice/parse', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ transcript: text, confidence: 0.95 })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            handleNLUResult(data.nlu_result);
+          } else {
+            showToast('Không thể phân tích giọng nói lúc này.');
+          }
+        } catch (e) {
+          showToast('Lỗi gửi giọng nói: ' + e.message);
+        }
+      };
+
       try {
-        const ws = new WebSocket(`ws://${window.location.host}/api/v1/voice/stream`);
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const ws = new WebSocket(`${wsProtocol}//${window.location.host}/api/v1/voice/stream`);
+
+        const timer = setTimeout(() => {
+          if (!handled) {
+            try { ws.close(); } catch (_) {}
+            fallbackHttp();
+          }
+        }, 2000);
+
         ws.onopen = () => {
           ws.send(JSON.stringify({ transcript: text, confidence: 0.95 }));
         };
+
         ws.onmessage = (event) => {
-          const data = JSON.parse(event.data);
-          if (data.event_type === 'NLU_RECOGNIZED') {
-            handleNLUResult(data.nlu_result);
-            ws.close();
+          clearTimeout(timer);
+          try {
+            const data = JSON.parse(event.data);
+            if (data.event_type === 'NLU_RECOGNIZED' && !handled) {
+              handled = true;
+              handleNLUResult(data.nlu_result);
+              ws.close();
+            }
+          } catch (e) {
+            fallbackHttp();
           }
         };
+
         ws.onerror = () => {
-          showToast('Lỗi kết nối Voice WebSocket');
+          clearTimeout(timer);
+          fallbackHttp();
         };
       } catch (err) {
-        showToast('Lỗi: ' + err.message);
+        fallbackHttp();
       }
     }
 
