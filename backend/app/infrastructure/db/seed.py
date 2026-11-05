@@ -426,5 +426,8 @@ async def seed_database():
         print("Database seeding completed successfully!")
 
 if __name__ == "__main__":
-    asyncio.run(seed_database())
+    async def main():
+        await seed_database()
+        await engine.dispose()
+    asyncio.run(main())
 

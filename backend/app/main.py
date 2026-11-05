@@ -9,8 +9,13 @@ from app.api.v1.router import api_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: ensure database tables exist
+    # Startup: ensure database tables exist and seed if empty
     await init_db()
+    try:
+        from app.infrastructure.db.seed import seed_database
+        await seed_database()
+    except Exception as e:
+        print(f"Auto-seed notification: {e}")
     yield
     # Shutdown
 

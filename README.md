@@ -242,3 +242,4 @@ node --experimental-strip-types mobile/tests/voiceAndCart.test.js
 * **Mã Nguồn:** [https://github.com/TrongManh1105/Mobile-App](https://github.com/TrongManh1105/Mobile-App)
 * **Docker Image:** [https://hub.docker.com/r/trongmanh1105/voice-food-app](https://hub.docker.com/r/trongmanh1105/voice-food-app)
 * **Giấy Phép:** Phân phối dưới giấy phép [MIT License](LICENSE).
+

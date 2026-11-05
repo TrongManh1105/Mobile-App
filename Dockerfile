@@ -20,7 +20,8 @@ RUN pip install --no-cache-dir -r requirements.txt greenlet
 # Copy backend application source
 COPY backend/ .
 
-# Ensure seed script runs if database does not exist, then start server
+# Start FastAPI server (database will auto-seed on startup via lifespan)
 EXPOSE 8000
 
-CMD ["sh", "-c", "python -m app.infrastructure.db.seed && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+
