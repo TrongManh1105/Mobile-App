@@ -57,6 +57,33 @@ SAMPLE_DISHES = [
         "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.4, 0.0, 0.8, 0.50],
         "image_url": "/static/images/pho_04.jpg"
     },
+    {
+        "id": "pho_05",
+        "name": "Phở Bò Tái Nạm Truyền Thống",
+        "category": "Pho",
+        "price": 65000,
+        "prep_time_minutes": 8,
+        "flavor_tags": ["dam_da", "thom_thao_qua", "nong"],
+        "meal_types": ["breakfast", "lunch", "dinner"],
+        "is_vegetarian": False,
+        "is_available": True,
+        "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.85, 0.1, 0.9, 0.65],
+        "image_url": "/static/images/pho_05.jpg"
+    },
+    {
+        "id": "pho_06",
+        "name": "Phở Bò Chín Nạm Gầu Giòn",
+        "category": "Pho",
+        "price": 65000,
+        "prep_time_minutes": 8,
+        "flavor_tags": ["dam_da", "beo_ngay", "nong"],
+        "meal_types": ["breakfast", "lunch", "dinner"],
+        "is_vegetarian": False,
+        "is_available": True,
+        "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.8, 0.1, 0.9, 0.65],
+        "image_url": "/static/images/pho_06.jpg"
+    },
+
 
     # --- CƠM (RICE DISHES) ---
     {
@@ -366,6 +393,59 @@ SAMPLE_DISHES = [
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.35, 0.0, 0.0, 0.20],
         "image_url": "/static/images/drink_06.jpg"
     },
+    {
+        "id": "drink_07",
+        "name": "Coca-Cola Lon Ướp Lạnh",
+        "category": "DoUong",
+        "price": 15000,
+        "prep_time_minutes": 1,
+        "flavor_tags": ["ngot", "co_ga", "mat_lanh"],
+        "meal_types": ["breakfast", "lunch", "dinner", "afternoon_snack"],
+        "is_vegetarian": True,
+        "is_available": True,
+        "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.15],
+        "image_url": "/static/images/drink_07.jpg"
+    },
+    {
+        "id": "drink_08",
+        "name": "Pepsi Đóng Lon Ướp Lạnh",
+        "category": "DoUong",
+        "price": 15000,
+        "prep_time_minutes": 1,
+        "flavor_tags": ["ngot", "co_ga", "mat_lanh"],
+        "meal_types": ["breakfast", "lunch", "dinner", "afternoon_snack"],
+        "is_vegetarian": True,
+        "is_available": True,
+        "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.5, 0.0, 0.0, 0.15],
+        "image_url": "/static/images/drink_08.jpg"
+    },
+    {
+        "id": "drink_09",
+        "name": "Nước Tăng Lực Bò Húc (Red Bull)",
+        "category": "DoUong",
+        "price": 20000,
+        "prep_time_minutes": 1,
+        "flavor_tags": ["ngot", "tinh_tao", "mat_lanh"],
+        "meal_types": ["breakfast", "lunch", "dinner", "afternoon_snack"],
+        "is_vegetarian": True,
+        "is_available": True,
+        "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.7, 0.0, 0.0, 0.20],
+        "image_url": "/static/images/drink_09.jpg"
+    },
+    {
+        "id": "drink_10",
+        "name": "7Up Vị Chanh Ướp Lạnh",
+        "category": "DoUong",
+        "price": 15000,
+        "prep_time_minutes": 1,
+        "flavor_tags": ["chua_ngot", "co_ga", "mat_lanh"],
+        "meal_types": ["breakfast", "lunch", "dinner", "afternoon_snack"],
+        "is_vegetarian": True,
+        "is_available": True,
+        "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.45, 0.0, 0.0, 0.15],
+        "image_url": "/static/images/drink_10.jpg"
+    },
+
 
     # --- TRÁNG MIỆNG (DESSERT) ---
     {
@@ -445,6 +525,27 @@ SAMPLE_COMBOS = [
         "complementary_dish_id": "drink_02",
         "discount_rate": 0.15,
         "combo_name": "Combo Bánh Mì Chảo & Cà Phê Muối Huế"
+    },
+{
+        "id": "combo_08",
+        "primary_dish_id": "pho_05",
+        "complementary_dish_id": "side_02",
+        "discount_rate": 0.10,
+        "combo_name": "Combo Phở Bò Tái Nạm & Quẩy Giòn"
+    },
+    {
+        "id": "combo_09",
+        "primary_dish_id": "pho_06",
+        "complementary_dish_id": "drink_07",
+        "discount_rate": 0.10,
+        "combo_name": "Combo Phở Bò Chín & Coca-Cola Mát Lạnh"
+    },
+    {
+        "id": "combo_10",
+        "primary_dish_id": "com_04",
+        "complementary_dish_id": "drink_08",
+        "discount_rate": 0.12,
+        "combo_name": "Combo Cơm Rang Dưa Bò & Pepsi Lon"
     }
 ]
 
