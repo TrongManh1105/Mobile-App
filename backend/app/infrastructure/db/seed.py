@@ -16,7 +16,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.85, 0.1, 0.9, 0.65],
-        "image_url": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500"
+        "image_url": "/static/images/pho_01.jpg"
     },
     {
         "id": "pho_02",
@@ -29,7 +29,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.9, 0.2, 0.9, 0.75],
-        "image_url": "https://images.unsplash.com/photo-1594998893017-36147cbcae05?w=500"
+        "image_url": "/static/images/pho_02.jpg"
     },
     {
         "id": "pho_03",
@@ -42,7 +42,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.6, 0.0, 0.9, 0.60],
-        "image_url": "https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=500"
+        "image_url": "/static/images/pho_03.jpg"
     },
     {
         "id": "pho_04",
@@ -55,7 +55,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [1.0, 0.0, 0.0, 0.0, 0.4, 0.0, 0.8, 0.50],
-        "image_url": "https://images.unsplash.com/photo-1547928576-a4a33237cbc3?w=500"
+        "image_url": "/static/images/pho_04.jpg"
     },
 
     # --- CƠM (RICE DISHES) ---
@@ -70,7 +70,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.0, 1.0, 0.0, 0.0, 0.85, 0.3, 0.7, 0.68],
-        "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500"
+        "image_url": "/static/images/com_01.jpg"
     },
     {
         "id": "com_02",
@@ -83,7 +83,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.0, 1.0, 0.0, 0.0, 0.8, 0.4, 0.7, 0.65],
-        "image_url": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500"
+        "image_url": "/static/images/com_02.jpg"
     },
     {
         "id": "com_03",
@@ -96,7 +96,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.0, 1.0, 0.0, 0.0, 0.7, 0.1, 0.7, 0.60],
-        "image_url": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500"
+        "image_url": "/static/images/com_03.jpg"
     },
     {
         "id": "com_04",
@@ -109,7 +109,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.0, 1.0, 0.0, 0.0, 0.75, 0.2, 0.8, 0.55],
-        "image_url": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500"
+        "image_url": "/static/images/com_04.jpg"
     },
     {
         "id": "com_05",
@@ -122,7 +122,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 1.0, 0.0, 0.0, 0.5, 0.1, 0.7, 0.48],
-        "image_url": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500"
+        "image_url": "/static/images/com_05.jpg"
     },
 
     # --- BÚN / MÌ (BUN & NOODLES) ---
@@ -137,7 +137,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.8, 0.0, 0.8, 0.0, 0.95, 0.8, 0.9, 0.68],
-        "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500"
+        "image_url": "/static/images/bun_01.jpg"
     },
     {
         "id": "bun_02",
@@ -150,7 +150,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.6, 0.0, 0.9, 0.0, 0.7, 0.2, 0.6, 0.62],
-        "image_url": "https://images.unsplash.com/photo-1559847844-5315695dadae?w=500"
+        "image_url": "/static/images/bun_02.jpg"
     },
     {
         "id": "bun_03",
@@ -163,7 +163,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.5, 0.0, 0.9, 0.0, 0.9, 0.5, 0.5, 0.75],
-        "image_url": "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500"
+        "image_url": "/static/images/bun_03.jpg"
     },
     {
         "id": "bun_04",
@@ -176,7 +176,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.6, 0.0, 0.8, 0.0, 0.7, 0.3, 0.6, 0.58],
-        "image_url": "https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=500"
+        "image_url": "/static/images/bun_04.jpg"
     },
     {
         "id": "bun_05",
@@ -189,7 +189,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.7, 0.0, 0.8, 0.0, 0.75, 0.3, 0.6, 0.55],
-        "image_url": "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500"
+        "image_url": "/static/images/bun_05.jpg"
     },
 
     # --- BÁNH MÌ (VIETNAMESE BAGUETTES) ---
@@ -204,7 +204,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.3, 0.0, 0.0, 0.0, 0.85, 0.2, 0.8, 0.52],
-        "image_url": "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500"
+        "image_url": "/static/images/bm_01.jpg"
     },
     {
         "id": "bm_02",
@@ -217,7 +217,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.2, 0.0, 0.0, 0.0, 0.75, 0.3, 0.6, 0.35],
-        "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500"
+        "image_url": "/static/images/bm_02.jpg"
     },
 
     # --- ĐỒ ĂN KÈM (COMPLEMENTARY / SIDES) ---
@@ -232,7 +232,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.2, 0.2, 0.6, 0.0, 0.7, 0.1, 0.5, 0.30],
-        "image_url": "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500"
+        "image_url": "/static/images/side_01.jpg"
     },
     {
         "id": "side_02",
@@ -245,7 +245,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.3, 0.0, 0.0, 0.0, 0.2, 0.0, 0.1, 0.10],
-        "image_url": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500"
+        "image_url": "/static/images/side_02.jpg"
     },
     {
         "id": "side_03",
@@ -258,7 +258,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.4, 0.0, 0.0, 0.0, 0.6, 0.0, 0.5, 0.12],
-        "image_url": "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500"
+        "image_url": "/static/images/side_03.jpg"
     },
     {
         "id": "side_04",
@@ -271,7 +271,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.2, 0.4, 0.0, 0.0, 0.4, 0.0, 0.7, 0.25],
-        "image_url": "https://images.unsplash.com/photo-1547592180-85f173990554?w=500"
+        "image_url": "/static/images/side_04.jpg"
     },
     {
         "id": "side_05",
@@ -284,7 +284,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": False,
         "is_available": True,
         "feature_vector": [0.1, 0.1, 0.5, 0.0, 0.6, 0.1, 0.4, 0.25],
-        "image_url": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500"
+        "image_url": "/static/images/side_05.jpg"
     },
 
     # --- ĐỒ UỐNG (BEVERAGES) ---
@@ -299,7 +299,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.45, 0.0, 0.0, 0.28],
-        "image_url": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500"
+        "image_url": "/static/images/drink_01.jpg"
     },
     {
         "id": "drink_02",
@@ -312,7 +312,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.85, 0.0, 0.1, 0.32],
-        "image_url": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500"
+        "image_url": "/static/images/drink_02.jpg"
     },
     {
         "id": "drink_03",
@@ -325,7 +325,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.8, 0.0, 0.1, 0.30],
-        "image_url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500"
+        "image_url": "/static/images/drink_03.jpg"
     },
     {
         "id": "drink_04",
@@ -338,7 +338,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.4, 0.0, 0.0, 0.22],
-        "image_url": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500"
+        "image_url": "/static/images/drink_04.jpg"
     },
     {
         "id": "drink_05",
@@ -351,7 +351,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.1, 0.0, 0.0, 0.05],
-        "image_url": "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=500"
+        "image_url": "/static/images/drink_05.jpg"
     },
     {
         "id": "drink_06",
@@ -364,7 +364,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 1.0, 0.35, 0.0, 0.0, 0.20],
-        "image_url": "https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=500"
+        "image_url": "/static/images/drink_06.jpg"
     },
 
     # --- TRÁNG MIỆNG (DESSERT) ---
@@ -379,7 +379,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.1, 0.25],
-        "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500"
+        "image_url": "/static/images/dessert_01.jpg"
     },
     {
         "id": "dessert_02",
@@ -392,7 +392,7 @@ SAMPLE_DISHES = [
         "is_vegetarian": True,
         "is_available": True,
         "feature_vector": [0.0, 0.0, 0.0, 0.5, 0.45, 0.0, 0.0, 0.25],
-        "image_url": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500"
+        "image_url": "/static/images/dessert_02.jpg"
     }
 ]
 
@@ -507,8 +507,10 @@ async def seed_database():
         result = await session.execute(select(Dish))
         existing_dishes = result.scalars().all()
         if len(existing_dishes) == len(SAMPLE_DISHES):
-            print(f"Database already up to date with {len(existing_dishes)} dishes. Skipping seed.")
-            return
+            needs_update = any(not (d.image_url and d.image_url.startswith("/static/images/")) for d in existing_dishes)
+            if not needs_update:
+                print(f"Database already up to date with {len(existing_dishes)} dishes. Skipping seed.")
+                return
 
         # Refresh dataset with new dishes, images and POIs
         print("Refreshing database with updated dishes, images, and POIs...")
