@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-09T08:18:00Z",
+  "title": "Design System: Vocalicious",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Culinary Gold",
+        "canonical": "#f59e0b",
+        "tonalRamp": ["#fffbeb", "#fef3c7", "#fde68a", "#fcd34d", "#fbbf24", "#f59e0b", "#d97706", "#b45309"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Fresh Herb Mint",
+        "canonical": "#10b981",
+        "tonalRamp": ["#ecfdf5", "#a7f3d0", "#34d399", "#10b981", "#059669"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Obsidian Deep",
+        "canonical": "#020617",
+        "tonalRamp": ["#020617", "#0f172a", "#1e293b", "#334155", "#475569"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Chassis title, ETD counter, and primary modal headers." },
+      "headline": { "displayName": "Headline", "purpose": "Dish titles and cart section headers." },
+      "title": { "displayName": "Title", "purpose": "Prices, button labels, and status badges." },
+      "body": { "displayName": "Body", "purpose": "Dish descriptions, notes, and POI addresses." },
+      "label": { "displayName": "Label", "purpose": "Micro-badges, preparation time tags, and chips." }
+    },
+    "shadows": [
+      { "name": "voice-glow", "value": "0 0 30px rgba(245, 158, 11, 0.5)", "purpose": "Pulsating halo around the voice trigger FAB." },
+      { "name": "chassis-depth", "value": "0 25px 50px -12px rgba(0, 0, 0, 0.7)", "purpose": "Outer shadow anchoring the phone frame on desktop viewports." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for tab and modal transitions." },
+      { "name": "voice-pulse", "value": "1.8s infinite ease-in-out", "purpose": "Rhythmic breathing animation for the voice listening state." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Bold call-to-action used for confirming orders and adding items.",
+      "html": "<button class=\"bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs px-5 py-3 rounded-2xl shadow-lg transition active:scale-95\">XÁC NHẬN ĐƠN HÀNG</button>",
+      "css": "button { background: #f59e0b; color: #020617; font-weight: 800; font-size: 12px; padding: 12px 20px; border-radius: 16px; border: none; cursor: pointer; transition: all 0.2s; } button:hover { background: #fbbf24; }"
+    },
+    {
+      "name": "Voice FAB Trigger",
+      "kind": "custom",
+      "refersTo": "voice-fab",
+      "description": "Floating center microphone button with radiant amber glow.",
+      "html": "<button class=\"w-14 h-14 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_25px_rgba(245,158,11,0.5)]\"><i class=\"fa-solid fa-microphone\"></i></button>",
+      "css": ".voice-fab { width: 56px; height: 56px; border-radius: 9999px; background: linear-gradient(to top right, #d97706, #fbbf24); color: #020617; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(245, 158, 11, 0.5); border: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Precision Culinary Terminal",
+    "overview": "Vocalicious is crafted as a high-precision, zero-noise culinary terminal tailored for Vietnamese food culture. It abandons visual clutter, noisy promotional banners, and convoluted multi-page navigations in favor of purposeful dark ergonomics, instant auditory feedback, and fluid voice recognition.",
+    "keyCharacteristics": [
+      "Zero Noise & Immediate Clarity",
+      "Tonal Layering with Ambient Glow",
+      "Tactile Ergonomics with 48x48dp Touch Targets"
+    ],
+    "rules": [
+      {
+        "name": "The Zero Noise Rule",
+        "body": "Never introduce flashing marketing banners, intrusive discount pop-ups, or unprompted modals. The primary accent is reserved strictly for user intent, voice feedback, and transactional certainty.",
+        "section": "colors"
+      },
+      {
+        "name": "The Currency Emphasis Rule",
+        "body": "Prices are always set in bold or extrabold with the localized Vietnamese đ or VNĐ symbol clearly visible.",
+        "section": "typography"
+      },
+      {
+        "name": "The State-Driven Elevation Rule",
+        "body": "Surfaces rest flat with 1px border contrast. Elevation and glowing halos only activate in direct response to user state.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do maintain a strict 48x48dp minimum touch target for all clickable buttons, chips, and icons.",
+      "Do preserve the 1px hairline border (border-slate-800) on dark card surfaces.",
+      "Do use Culinary Gold (#f59e0b) exclusively for user-initiated primary actions and voice cues.",
+      "Do show transparent preparation time badges on dishes and precise ETD countdowns."
+    ],
+    "donts": [
+      "Don't add unrequested commercial pop-ups, flashing discount tickers, or visual noise.",
+      "Don't use generic non-Vietnamese food photos.",
+      "Don't drop below 4.5:1 text contrast ratio on dark backgrounds.",
+      "Don't hijack or alter the physical Back button or system gesture behavior."
+    ]
+  }
+}
+

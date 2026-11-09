@@ -40,24 +40,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    
     
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.4); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.4); border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.8); }
 
     /* Pulse Glow Animation */
     @keyframes voice-glow {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); }
-      50% { transform: scale(1.08); box-shadow: 0 0 35px rgba(245, 158, 11, 0.8); }
+      0%, 100% { transform: scale(1); opacity: 0.35; }
+      50% { transform: scale(1.12); opacity: 0.75; }
     }
     .animate-voice-glow {
-      animation: voice-glow 1.8s infinite ease-in-out;
+      animation: voice-glow 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
     }
 
     /* Waveform Bar Transitions */
@@ -67,28 +64,64 @@
 
     /* Toast notification */
     #toast {
-      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+  
+    /* Baseline & Typography */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #020617;
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Strict Typography Hierarchy */
+    h1 { font-size: 1.5rem; line-height: 1.2; font-weight: 800; }
+    h2 { font-size: 1.125rem; line-height: 1.3; font-weight: 700; }
+    h3 { font-size: 0.875rem; line-height: 1.3; font-weight: 700; }
+    h4 { font-size: 0.75rem; line-height: 1.4; font-weight: 600; }
+
+    /* Selection & Caret */
+    ::selection { background: #f59e0b; color: #020617; }
+    input, textarea { caret-color: #f59e0b; }
+
+    /* Tabular Nums for prices and timers */
+    .tabular-nums, #countdown-clock, #total-display, #subtotal-display {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Prefers reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center sm:py-6 p-0 sm:px-4 select-none">
 
   <!-- PHONE CONTAINER CHASSIS (iPhone 16 Pro Style) -->
-  <div class="w-full sm:max-w-[420px] h-screen sm:h-[860px] bg-slate-900 sm:rounded-[48px] sm:border-[8px] sm:border-slate-800 shadow-2xl overflow-hidden flex flex-col relative sm:ring-1 sm:ring-slate-700/50">
+  <main role="main" class="w-full max-w-md mx-auto min-h-screen bg-slate-900 flex flex-col relative">
 
     <!-- TOP STATUS BAR & DYNAMIC ISLAND -->
     <div class="pt-3 px-6 pb-2 flex items-center justify-between z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800/60">
       <span class="text-xs font-semibold text-slate-400" id="current-clock">09:30</span>
       
       <!-- Dynamic Island Capsule -->
-      <div id="dynamic-island" class="bg-black text-slate-300 px-3 py-1 rounded-full text-[11px] font-semibold flex items-center space-x-2 border border-slate-800 shadow-inner transition-all duration-300">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block"></span>
+      <div id="status-capsule" class="bg-slate-800/90 text-slate-300 px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-2 border border-slate-700/60 shadow-inner transition-all duration-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400  inline-block"></span>
         <span id="island-text">VoiceFood AI</span>
       </div>
 
       <div class="flex items-center space-x-1.5 text-xs text-slate-400">
-        <i class="fa-solid fa-signal text-[10px]"></i>
-        <i class="fa-solid fa-wifi text-[10px]"></i>
+        <i class="fa-solid fa-signal text-xs"></i>
+        <i class="fa-solid fa-wifi text-xs"></i>
         <i class="fa-solid fa-battery-full text-xs text-emerald-400"></i>
       </div>
     </div>
@@ -105,7 +138,7 @@
             <i class="fa-solid fa-circle-check text-sky-400 text-xs"></i>
           </div>
           <div class="flex items-center text-[11px] text-slate-400">
-            <i class="fa-solid fa-location-dot text-amber-500 mr-1 text-[10px]"></i>
+            <i class="fa-solid fa-location-dot text-amber-500 mr-1 text-xs"></i>
             <span class="font-medium text-slate-300">Bàn 06 • Phố Cổ</span>
             <span class="mx-1">•</span>
             <span class="text-emerald-400 font-semibold">Mở cửa</span>
@@ -120,7 +153,7 @@
         </button>
         <button onclick="switchTab('cart')" class="relative w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center text-sm transition border border-slate-700/60 active:scale-95">
           <i class="fa-solid fa-bag-shopping"></i>
-          <span id="header-cart-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow hidden">0</span>
+          <span id="header-cart-badge" class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-xs font-black w-4 h-4 rounded-full flex items-center justify-center shadow hidden">0</span>
         </button>
       </div>
     </header>
@@ -135,10 +168,10 @@
         <div class="relative bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent p-3.5 rounded-2xl border border-amber-500/20">
           <div class="flex items-center justify-between mb-2">
             <div>
-              <p class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Trợ lý gọi món thông minh</p>
+              
               <h2 class="text-sm font-extrabold text-white">Chạm Mic & Nói Bằng Tiếng Việt</h2>
             </div>
-            <button onclick="openVoiceModal()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
+            <button onclick="openVoiceModal()" aria-label="Mở trợ lý giọng nói" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center space-x-1.5 shadow-md shadow-amber-500/20 transition active:scale-95">
               <i class="fa-solid fa-microphone"></i>
               <span>Nói ngay</span>
             </button>
@@ -147,8 +180,8 @@
           <!-- Search input -->
           <div class="relative">
             <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-            <input id="search-input" oninput="filterMenu()" type="text" placeholder="Tìm phở, cơm tấm, bún chả, trà đá..." class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
-            <button onclick="clearSearch()" id="clear-search-btn" class="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300 text-xs hidden">
+            <input id="search-input" oninput="filterMenu()" type="text" placeholder="Tìm phở, cơm tấm, bún chả, trà đá..." aria-label="Tìm kiếm món ăn" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
+            <button onclick="clearSearch()" id="clear-search-btn" aria-label="Xóa nội dung tìm kiếm" class="absolute right-1 top-1 w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-200 text-sm hidden">
               <i class="fa-solid fa-circle-xmark"></i>
             </button>
           </div>
@@ -156,7 +189,7 @@
 
         <!-- Quick Voice Suggestion Chips -->
         <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none text-[11px]">
-          <span class="text-slate-500 font-bold uppercase text-[9px] whitespace-nowrap mr-1"><i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-1"></i>Gợi ý câu lệnh:</span>
+          <span class="text-slate-500 font-bold uppercase text-[11px] whitespace-nowrap mr-1"><i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-1"></i>Gợi ý câu lệnh:</span>
           <button onclick="triggerVoiceQuery('Cho 2 phở bò tái nạm ít cay và 1 trà đá')" class="px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-amber-500/20 hover:text-amber-300 text-slate-300 border border-slate-700/50 whitespace-nowrap transition active:scale-95">
             🍲 "2 phở tái ít cay + 1 trà đá"
           </button>
@@ -207,7 +240,7 @@
         <!-- Top Back Bar -->
         <div class="flex items-center justify-between pb-2 border-b border-slate-800">
           <button onclick="switchTab('menu')" class="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-white transition">
-            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            <i class="fa-solid fa-chevron-left text-xs"></i>
             <span class="font-medium">Tiếp tục chọn món</span>
           </button>
           <span class="text-xs font-bold text-white uppercase tracking-wider">Giỏ hàng của bạn</span>
@@ -226,12 +259,12 @@
           <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent p-3.5 rounded-2xl border border-amber-500/30">
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center space-x-1.5">
-                <div class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">
+                <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-400 inline-flex items-center justify-center text-xs">
                   <i class="fa-solid fa-sparkles"></i>
                 </div>
-                <h4 class="text-xs font-bold text-amber-300">Gợi ý Combo Tiết Kiệm Cho Bạn</h4>
+                <h3 class="text-xs font-bold text-amber-300">Gợi ý Combo Tiết Kiệm Cho Bạn</h3>
               </div>
-              <span class="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">✨ AI Gợi ý</span>
+              <span class="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">✨ AI Gợi ý</span>
             </div>
             <div id="combo-chips" class="space-y-2">
               <!-- Populated by fetchComboRecommendations() -->
@@ -241,23 +274,23 @@
 
         <!-- Customer & Order Details Form -->
         <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 space-y-2 text-xs">
-          <p class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Thông tin nhận món</p>
+          <p class="font-bold text-slate-300 uppercase tracking-wider text-xs">Thông tin nhận món</p>
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="text-[10px] text-slate-400">Tên khách hàng</label>
+              <label class="text-xs text-slate-400">Tên khách hàng</label>
               <input id="cust-name" type="text" value="Khách Trải Nghiệm" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
             </div>
             <div>
-              <label class="text-[10px] text-slate-400">Số điện thoại</label>
+              <label class="text-xs text-slate-400">Số điện thoại</label>
               <input id="cust-phone" type="text" value="0912345678" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
             </div>
           </div>
           <div>
-            <label class="text-[10px] text-slate-400">Vị trí / Bàn ăn</label>
+            <label class="text-xs text-slate-400">Vị trí / Bàn ăn</label>
             <input id="cust-table" type="text" value="Bàn 06 (Tầng 1)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
           </div>
           <div>
-            <label class="text-[10px] text-slate-400">Ghi chú cho bếp</label>
+            <label class="text-xs text-slate-400">Ghi chú cho bếp</label>
             <input id="cust-note" type="text" placeholder="Ví dụ: Nhiều hành, ăn nóng, ít cay..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-400">
           </div>
         </div>
@@ -290,7 +323,7 @@
         <!-- Top Status Banner -->
         <div class="text-center py-2">
           <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30 mb-1" id="tracking-status-badge">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="w-2 h-2 rounded-full bg-amber-400 "></span>
             <span id="tracking-status-text">Bếp Đang Nấu Món</span>
           </div>
           <h3 id="tracking-order-id" onclick="simulateKitchenStatus('READY')" class="text-xs font-semibold text-slate-400 cursor-pointer hover:text-slate-200 transition" title="Chạm để làm mới trạng thái">#ORD-LOADING</h3>
@@ -300,7 +333,7 @@
         <div class="relative bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 text-center shadow-inner overflow-hidden">
           <div class="relative z-10">
             <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Thời gian chế biến dự kiến</p>
-            <div id="countdown-clock" class="text-5xl font-black text-amber-400 tracking-tight my-2 drop-shadow-md">15:00</div>
+            <div id="countdown-clock" class="text-5xl font-black text-amber-400 tracking-tight my-2 ">15:00</div>
             <p class="text-xs text-slate-300 flex items-center justify-center font-medium">
               <i class="fa-solid fa-fire-burner text-orange-400 mr-1.5 animate-bounce"></i>
               <span>Món ăn của bạn đang được chế biến nóng sốt</span>
@@ -308,28 +341,28 @@
           </div>
           
           <!-- Stepper 4 steps -->
-          <div class="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-4 gap-1 text-[10px]">
+          <div class="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-4 gap-1 text-xs">
             <div class="flex flex-col items-center step-item" id="step-created">
-              <div class="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold mb-1">
-                <i class="fa-solid fa-check text-[10px]"></i>
+              <span class="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 inline-flex items-center justify-center font-bold mb-1">
+                <i class="fa-solid fa-check text-xs"></i>
               </div>
               <span class="text-slate-300 font-semibold">Tạo đơn</span>
             </div>
             <div class="flex flex-col items-center step-item" id="step-sent">
-              <div class="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold mb-1">
-                <i class="fa-solid fa-check text-[10px]"></i>
+              <span class="w-6 h-6 rounded-full bg-emerald-500 text-slate-950 inline-flex items-center justify-center font-bold mb-1">
+                <i class="fa-solid fa-check text-xs"></i>
               </div>
               <span class="text-slate-300 font-semibold">Đã gửi</span>
             </div>
             <div class="flex flex-col items-center step-item" id="step-preparing">
-              <div class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold mb-1 animate-pulse">
-                <i class="fa-solid fa-fire text-[10px]"></i>
+              <div class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center font-bold mb-1 ">
+                <i class="fa-solid fa-fire text-xs"></i>
               </div>
               <span class="text-amber-400 font-bold">Đang nấu</span>
             </div>
             <div class="flex flex-col items-center step-item" id="step-ready">
-              <div class="w-6 h-6 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center font-bold mb-1">
-                <i class="fa-solid fa-bell text-[10px]"></i>
+              <span class="w-6 h-6 rounded-full bg-slate-800 text-slate-500 inline-flex items-center justify-center font-bold mb-1">
+                <i class="fa-solid fa-bell text-xs"></i>
               </div>
               <span class="text-slate-500">Mời lấy</span>
             </div>
@@ -342,7 +375,7 @@
             <span class="text-xs font-bold text-emerald-400 flex items-center">
               <i class="fa-brands fa-whatsapp text-base mr-1.5"></i> Đã đồng bộ với WhatsApp quán
             </span>
-            <span class="text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">Tự động</span>
+            <span class="text-xs text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">Tự động</span>
           </div>
           <p class="text-[11px] text-slate-300 leading-relaxed">
             Tin nhắn đơn hàng đã được cấu hình sẵn. Bấm nút dưới đây để mở ứng dụng WhatsApp gửi cho quán hoặc sao chép văn bản.
@@ -365,7 +398,7 @@
             <h4 class="text-xs font-bold text-white flex items-center">
               <i class="fa-solid fa-map-location-dot text-sky-400 mr-1.5"></i> Đi dạo quanh quán trong lúc chờ
             </h4>
-            <span class="text-[10px] text-slate-400">Bán kính đi bộ &lt; 1km</span>
+            <span class="text-xs text-slate-400">Bán kính đi bộ &lt; 1km</span>
           </div>
           <div id="nearby-poi-container" class="space-y-2">
             <!-- Populated by fetchNearbyPOIs() -->
@@ -378,23 +411,23 @@
     <div class="absolute bottom-0 left-0 right-0 p-3 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/80 flex items-center justify-between z-30">
       
       <!-- Nav Button: Menu -->
-      <button onclick="switchTab('menu')" id="nav-btn-menu" class="flex-1 flex flex-col items-center justify-center text-amber-400 font-bold text-[11px] transition">
+      <button onclick="switchTab('menu')" id="nav-btn-menu" aria-label="Xem thực đơn" class="flex-1 min-h-[48px] flex flex-col items-center justify-center text-amber-400 font-bold text-[11px] transition">
         <i class="fa-solid fa-compass text-base mb-0.5"></i>
         <span>Thực đơn</span>
       </button>
 
       <!-- Center Pulsing Mic Trigger -->
       <div class="relative -top-5 mx-2">
-        <button onclick="openVoiceModal()" class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-400 text-slate-950 flex items-center justify-center text-xl shadow-xl shadow-amber-500/30 hover:scale-105 active:scale-95 transition-all">
+        <button onclick="openVoiceModal()" aria-label="Mở trợ lý giọng nói" class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-400 text-slate-950 flex items-center justify-center text-xl shadow-xl shadow-black/50 hover:scale-105 active:scale-95 transition-all">
           <i class="fa-solid fa-microphone"></i>
         </button>
       </div>
 
       <!-- Nav Button: Cart -->
-      <button onclick="switchTab('cart')" id="nav-btn-cart" class="flex-1 flex flex-col items-center justify-center text-slate-400 hover:text-white text-[11px] transition relative">
+      <button onclick="switchTab('cart')" id="nav-btn-cart" aria-label="Xem giỏ hàng" class="flex-1 min-h-[48px] flex flex-col items-center justify-center text-slate-400 hover:text-white text-[11px] transition relative">
         <div class="relative">
           <i class="fa-solid fa-basket-shopping text-base mb-0.5"></i>
-          <span id="dock-cart-badge" class="absolute -top-1 -right-2 bg-amber-500 text-slate-950 text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+          <span id="dock-cart-badge" class="absolute -top-1 -right-2 bg-amber-500 text-slate-950 text-[11px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
         </div>
         <span>Giỏ hàng</span>
       </button>
@@ -409,7 +442,7 @@
           <i class="fa-solid fa-sparkles"></i>
           <span>Trợ lý Giọng nói AI</span>
         </div>
-        <button onclick="closeVoiceModal()" class="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-sm transition">
+        <button onclick="closeVoiceModal()" aria-label="Đóng trợ lý giọng nói" class="w-11 h-11 rounded-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm transition active:scale-95">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -419,8 +452,8 @@
         
         <!-- Big Pulsing Mic Button -->
         <div class="relative mb-6">
-          <div id="modal-mic-pulse" class="absolute -inset-4 rounded-full bg-amber-500/20 animate-voice-glow"></div>
-          <button id="modal-mic-btn" onclick="toggleSpeechRecording()" class="relative w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 text-3xl flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
+          <span id="modal-mic-pulse" class="absolute -inset-4 rounded-full bg-amber-500/20 animate-voice-glow block pointer-events-none"></span>
+          <button id="modal-mic-btn" onclick="toggleSpeechRecording()" aria-label="Bắt đầu ghi âm giọng nói" class="relative w-24 h-24 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 text-3xl flex items-center justify-center shadow-2xl active:scale-95 transition-transform">
             <i id="modal-mic-icon" class="fa-solid fa-microphone"></i>
           </button>
         </div>
@@ -441,18 +474,18 @@
 
       <!-- Bottom Sample Utterances -->
       <div class="w-full max-w-xs space-y-1.5 text-xs">
-        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider text-center">Gợi ý câu lệnh thường dùng:</p>
+        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider text-center">Gợi ý câu lệnh thường dùng:</p>
         <button onclick="processVoiceText('Cho 2 bát phở bò tái nạm ít cay và 1 trà đá')" class="w-full text-left p-2 rounded-xl bg-slate-900/80 hover:bg-amber-500/20 hover:text-amber-300 border border-slate-800 text-slate-300 text-xs transition flex items-center justify-between">
           <span>🍲 "Cho 2 phở bò tái nạm ít cay và 1 trà đá"</span>
-          <i class="fa-solid fa-arrow-turn-down text-[10px] text-amber-400"></i>
+          <i class="fa-solid fa-arrow-turn-down text-xs text-amber-400"></i>
         </button>
         <button onclick="processVoiceText('Thêm 1 cơm gà xối mỡ giòn da')" class="w-full text-left p-2 rounded-xl bg-slate-900/80 hover:bg-amber-500/20 hover:text-amber-300 border border-slate-800 text-slate-300 text-xs transition flex items-center justify-between">
           <span>🍛 "Thêm 1 cơm gà xối mỡ giòn da"</span>
-          <i class="fa-solid fa-arrow-turn-down text-[10px] text-amber-400"></i>
+          <i class="fa-solid fa-arrow-turn-down text-xs text-amber-400"></i>
         </button>
         <button onclick="processVoiceText('Xác nhận đặt đơn')" class="w-full text-left p-2 rounded-xl bg-slate-900/80 hover:bg-amber-500/20 hover:text-amber-300 border border-slate-800 text-amber-400 text-xs font-semibold transition flex items-center justify-between">
           <span>⚡ "Xác nhận đặt đơn"</span>
-          <i class="fa-solid fa-arrow-turn-down text-[10px] text-amber-400"></i>
+          <i class="fa-solid fa-arrow-turn-down text-xs text-amber-400"></i>
         </button>
       </div>
     </div>
@@ -460,20 +493,20 @@
     <!-- DISH DETAIL BOTTOM SHEET MODAL -->
     <div id="dish-modal" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex flex-col justify-end hidden">
       <div class="bg-slate-900 border-t border-slate-700/80 rounded-t-[32px] p-5 space-y-4 max-h-[85%] overflow-y-auto shadow-2xl">
-        <div class="w-10 h-1 bg-slate-700 rounded-full mx-auto -mt-1"></div>
+        <span class="w-10 h-1 bg-slate-700 rounded-full mx-auto -mt-1 block"></span>
         <div class="flex justify-between items-start">
           <div class="flex-1 mr-3">
             <h3 id="modal-dish-name" class="text-base font-extrabold text-white">Tên Món Ăn</h3>
             <p id="modal-dish-price" class="text-sm font-extrabold text-amber-400 mt-0.5">0 VNĐ</p>
           </div>
-          <button onclick="closeDishModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-xs">
+          <button onclick="closeDishModal()" aria-label="Đóng chi tiết món" class="w-11 h-11 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm active:scale-95 transition">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
 
-        <img id="modal-dish-img" src="" class="w-full h-44 rounded-2xl object-cover bg-slate-800 shadow">
+        <img id="modal-dish-img" src="/static/images/pho_01.jpg" alt="Hình ảnh chi tiết món ăn" loading="lazy" decoding="async" class="w-full h-44 rounded-2xl object-cover bg-slate-800 shadow">
 
-        <div class="flex flex-wrap gap-1.5 text-[10px]" id="modal-dish-tags">
+        <div class="flex flex-wrap gap-1.5 text-xs" id="modal-dish-tags">
           <!-- Tags populated dynamically -->
         </div>
 
@@ -490,12 +523,12 @@
 
         <!-- Add To Cart Footer -->
         <div class="pt-2 flex items-center space-x-3">
-          <div class="flex items-center space-x-2 bg-slate-800 px-3 py-2 rounded-2xl border border-slate-700">
-            <button onclick="adjustModalQty(-1)" class="text-slate-400 hover:text-white text-xs px-1">-</button>
-            <span id="modal-qty" class="text-xs font-bold text-white w-4 text-center">1</span>
-            <button onclick="adjustModalQty(1)" class="text-slate-400 hover:text-white text-xs px-1">+</button>
+          <div class="flex items-center space-x-1.5">
+            <button onclick="adjustModalQty(-1)" aria-label="Giảm số lượng" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-sm font-bold active:scale-95 transition">-</button>
+            <span id="modal-qty" class="text-xs font-extrabold text-white w-6 text-center tabular-nums">1</span>
+            <button onclick="adjustModalQty(1)" aria-label="Tăng số lượng" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center text-sm font-bold active:scale-95 transition">+</button>
           </div>
-          <button onclick="addModalDishToCart()" class="flex-1 py-3 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center space-x-2 shadow-lg shadow-amber-500/20 active:scale-95 transition">
+          <button onclick="addModalDishToCart()" aria-label="Thêm vào giỏ hàng" class="flex-1 py-3 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center space-x-2 shadow-lg shadow-black/40 active:scale-95 transition">
             <i class="fa-solid fa-plus"></i>
             <span>Thêm vào giỏ</span>
           </button>
@@ -509,7 +542,7 @@
       <span id="toast-msg">Đã thêm món vào giỏ!</span>
     </div>
 
-  </div>
+  </main>
 
   <!-- CLIENT LOGIC & AUDIO SYNTHESIS -->
   <script>
@@ -614,7 +647,7 @@
             <!-- Thumbnail with prep time tag -->
             <div class="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-slate-800 cursor-pointer" onclick="openDishDetail('${dish.id}')">
               <img src="${dish.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200'}" class="w-full h-full object-cover">
-              <span class="absolute bottom-1 right-1 bg-black/70 backdrop-blur-sm text-[9px] text-amber-300 px-1 py-0.5 rounded font-bold">
+              <span class="absolute bottom-1 right-1 bg-black/70 backdrop-blur-sm text-[11px] text-amber-300 px-1 py-0.5 rounded font-bold">
                 ~${dish.prep_time_minutes}p
               </span>
             </div>
@@ -624,9 +657,9 @@
               <div onclick="openDishDetail('${dish.id}')" class="cursor-pointer">
                 <div class="flex items-center space-x-1.5">
                   <h4 class="text-xs font-extrabold text-white line-clamp-1">${dish.name}</h4>
-                  ${dish.is_vegetarian ? '<span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-1 rounded font-bold">Chay</span>' : ''}
+                  ${dish.is_vegetarian ? '<span class="text-[11px] bg-emerald-500/20 text-emerald-400 px-1 rounded font-bold">Chay</span>' : ''}
                 </div>
-                <div class="flex flex-wrap gap-1 mt-1 text-[10px] text-slate-400">
+                <div class="flex flex-wrap gap-1 mt-1 text-xs text-slate-400">
                   ${(dish.flavor_tags || []).slice(0, 2).map(tag => `<span class="bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">${tag}</span>`).join('')}
                 </div>
               </div>
@@ -643,7 +676,7 @@
                   </div>
                 ` : `
                   <button onclick="quickAddToCart('${dish.id}')" class="px-2.5 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-[11px] shadow-sm transition active:scale-95 flex items-center space-x-1">
-                    <i class="fa-solid fa-plus text-[10px]"></i>
+                    <i class="fa-solid fa-plus text-xs"></i>
                     <span>Thêm</span>
                   </button>
                 `}
@@ -771,7 +804,7 @@
             <p class="text-[11px] font-extrabold text-amber-400 mt-0.5">
               ${it.unitPrice.toLocaleString('vi-VN')}đ x ${it.quantity} = ${(it.unitPrice * it.quantity).toLocaleString('vi-VN')}đ
             </p>
-            ${it.note ? `<span class="inline-block mt-1 text-[10px] bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-md font-medium">👉 ${it.note}</span>` : ''}
+            ${it.note ? `<span class="inline-block mt-1 text-xs bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded-md font-medium">👉 ${it.note}</span>` : ''}
           </div>
           <div class="flex items-center space-x-1.5 bg-slate-950 border border-slate-800 px-2 py-1 rounded-xl">
             <button onclick="updateCartQty('${it.dishId}', ${it.quantity - 1})" class="text-slate-400 hover:text-white text-xs px-1 font-bold">-</button>
@@ -804,7 +837,7 @@
           <div class="bg-slate-900 border border-amber-500/30 rounded-xl p-2.5 flex items-center justify-between text-xs">
             <div class="flex-1 mr-2">
               <p class="font-extrabold text-amber-300 text-xs">${c.combo_name}</p>
-              <div class="flex items-center space-x-2 text-[10px] mt-0.5">
+              <div class="flex items-center space-x-2 text-xs mt-0.5">
                 <span class="text-slate-500 line-through">${c.original_total.toLocaleString('vi-VN')}đ</span>
                 <span class="text-emerald-400 font-bold">${c.discounted_total.toLocaleString('vi-VN')}đ</span>
                 <span class="bg-rose-500/20 text-rose-300 px-1 rounded font-bold">-${c.discount_rate * 100}%</span>
@@ -956,9 +989,9 @@
             </div>
             <div class="flex-1 mr-2">
               <h5 class="font-bold text-white text-xs leading-tight">${p.name}</h5>
-              <div class="flex items-center space-x-1.5 text-[10px] text-slate-400 mt-1">
+              <div class="flex items-center space-x-1.5 text-xs text-slate-400 mt-1">
                 <span class="text-sky-400 font-semibold flex items-center">
-                  <i class="fa-solid fa-location-dot text-[9px] mr-1"></i>${p.distance_meters}m
+                  <i class="fa-solid fa-location-dot text-[11px] mr-1"></i>${p.distance_meters}m
                 </span>
                 <span>•</span>
                 <span>~${p.walking_duration_minutes} phút đi bộ</span>
@@ -966,7 +999,7 @@
                 <span class="bg-slate-800 px-1.5 py-0.5 rounded text-slate-300">${p.category}</span>
               </div>
             </div>
-            <a href="${p.google_maps_url}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white font-bold text-[10px] transition border border-sky-500/30 flex items-center shrink-0">
+            <a href="${p.google_maps_url}" target="_blank" class="px-2.5 py-1.5 rounded-xl bg-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white font-bold text-xs transition border border-sky-500/30 flex items-center shrink-0">
               <i class="fa-solid fa-diamond-turn-right mr-1"></i> Đường đi
             </a>
           </div>
