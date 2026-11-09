@@ -78,6 +78,16 @@ async def demo_app():
             return HTMLResponse(content=f.read())
     return HTMLResponse(content="<h1>Interactive Demo App is ready</h1>")
 
+@app.api_route("/demo", methods=["GET", "HEAD"], response_class=HTMLResponse, tags=["Demo App V2"])
+@app.api_route("/v2", methods=["GET", "HEAD"], response_class=HTMLResponse, tags=["Demo App V2"])
+async def demo_app_v2():
+    """Giao diện phong cách mới Neo-Bento & Ambient Voice Canvas (Demo V2)."""
+    html_path = os.path.join(os.path.dirname(__file__), "static", "demo.html")
+    if os.path.exists(html_path):
+        with open(html_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Demo V2 is being generated...</h1>")
+
 @app.api_route("/health", methods=["GET", "HEAD"], tags=["Health"])
 async def health_check():
     return {"status": "healthy"}
